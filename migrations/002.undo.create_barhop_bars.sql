@@ -1,0 +1,1 @@
+DROP TABLE IF EXISTS barhop_bars;

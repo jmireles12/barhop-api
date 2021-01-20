@@ -8,7 +8,7 @@ const jsonParser = express.json()
 const serializeBar = bar => ({
     id: bar.id,
     name: bar.name,
-    listId: bar.listId,
+    listId: bar.listid,
     content: bar.content,
 })
 

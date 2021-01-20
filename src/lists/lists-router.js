@@ -56,7 +56,7 @@ listsRouter
                         error: { message: `List doesn't exist` }
                     })
                 }
-                res.folder = folder
+                res.list = list
                 next()
             })
             .catch(next)

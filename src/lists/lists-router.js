@@ -27,7 +27,7 @@ listsRouter
         for(const [key, value] of Object.entries(newList))
             if(value == null)
                 return res.status(400).json({
-                    error: { message: `Missing '${key}' in requrest body` }
+                    error: { message: `Missing '${key}' in request body` }
                 })
 
             ListsService.insertList(

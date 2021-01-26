@@ -1,6 +1,9 @@
 const path = require('path')
 const express = require('express');
 const BarsService = require('./bars-service')
+const resultsRouter = require('../results/results-router')
+const axios = require('axios')
+const config = require('../config')
 
 const barsRouter = express.Router()
 const jsonParser = express.json()
@@ -10,6 +13,15 @@ const serializeBar = bar => ({
     name: bar.name,
     listId: bar.listid,
     content: bar.content,
+})
+
+const serializeResult = result => ({
+    place_id: result.place_id,
+    name: result.name,
+    photos: result.photos,
+    address: result.formatted_address,
+    price: result.price_level,
+    rating: result.rating
 })
 
 barsRouter
@@ -45,6 +57,22 @@ barsRouter
                     .json(serializeBar(bar))
             })
             .catch(next)
+    })
+
+    
+barsRouter
+    .route('/search')
+    .get((req, res, next) => {
+        axios.get(config.API_URL)
+            .then(function (response) {
+                results = response.data.results
+                console.log(results)
+                res.json(results.map(serializeResult))
+            })
+            
+            .catch(function (error) {
+                console.error(error)
+            })
     })
 
 barsRouter
@@ -101,5 +129,7 @@ barsRouter
             })
             .catch(next)
     })
+
+
 
 module.exports = barsRouter

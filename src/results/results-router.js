@@ -35,7 +35,6 @@ resultsRouter
        axios.get(config.API_URL)
             .then(function (response) {
                 results = response.data.results
-                console.log(results)
                 return results
             })
             .catch(function (error) {

@@ -11,14 +11,15 @@ const jsonParser = express.json()
 const serializeBar = bar => ({
     id: bar.id,
     name: bar.name,
-    listId: bar.listid,
-    content: bar.content,
+    listid: bar.listid,
+    address: bar.address,
+    price: bar.price,
+    rating: bar.rating
 })
 
 const serializeResult = result => ({
-    place_id: result.place_id,
+    id: result.place_id,
     name: result.name,
-    photos: result.photos,
     address: result.formatted_address,
     price: result.price_level,
     rating: result.rating
@@ -35,8 +36,8 @@ barsRouter
             .catch(next)
     })
     .post(jsonParser, (req, res, next) => {
-        const { name, listId, content } = req.body
-        const newBar = { name, listId, content }
+        const { name, listid, address, price, rating } = req.body
+        const newBar = { name, listid, address, price, rating }
 
         for(const [key, value] of Object.entries(newBar))
             if(value == null)
@@ -44,7 +45,7 @@ barsRouter
                     error: { message: `Missing '${key}' in request body` }
                 })
                 
-            newBar.listId = listId
+            newBar.listid = listid
 
             BarsService.insertBar(
                 req.app.get('db'),
@@ -66,7 +67,6 @@ barsRouter
         axios.get(config.API_URL)
             .then(function (response) {
                 results = response.data.results
-                console.log(results)
                 res.json(results.map(serializeResult))
             })
             
@@ -107,14 +107,14 @@ barsRouter
             .catch(next)
     })
     .patch(jsonParser, (req, res, next) => {
-        const { name, listId, content } = req.body
-        const barToUpdate = { name, listId, content }
+        const { name, listid, address, price, rating } = req.body
+        const barToUpdate = { name, listid, address, price, rating }
 
         const numberOfValues = Object.values(barToUpdate).filter(Boolean).length
         if(numberOfValues === 0) {
             return res.status(400).json({
                 error: {
-                    message: `Request body must contain either 'name', 'listId' or 'content'`
+                    message: `Request body must contain either 'name', 'listId', 'address', 'price' or 'rating'`
                 }
             })
         }

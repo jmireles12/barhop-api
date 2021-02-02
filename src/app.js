@@ -20,7 +20,6 @@ app.use(cors())
 
 app.use('/api/lists', listsRouter)
 app.use('/api/bars', barsRouter)
-app.use('/api/results', resultsRouter)
 
 app.get('/', (req, res) => {
     res.send('Hello, world!')
